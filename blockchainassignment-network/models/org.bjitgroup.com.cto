@@ -1,0 +1,117 @@
+/**
+ * Write your model definitions here
+ */
+
+namespace org.bjitgroup.com
+
+participant User identified by userNID {
+  o String userNID
+  o String firstName
+  o String lastName 
+  
+  --> Cash cash 
+}
+
+
+// dummy data to check BTRC
+// {
+//   "$class": "org.bjitgroup.com.BTRC",
+//   "districtID": "0431",
+//   "districtName": "Barisal",
+//    "cash": "org.bjitgroup.com.Cash#CH1"
+// }
+
+participant BTRC identified by districtID {
+  o String districtID
+  o String districtName
+  
+  --> Cash cash
+}
+
+// participant Bank identified by bankId {
+//   o String bankId
+//   o String bankName
+//   --> Coins coins
+//   --> Cash cash
+// }
+
+// participant PDC identified by pdcId {
+//   o String pdcId
+//   o String pdcName
+//   --> Coins coins
+//   --> Energy energy
+// }
+
+
+
+asset Coins identified by coinId {
+  o String coinId
+  o Double value
+  o String ownerId
+  o OwnerEntity OwnerEntity
+}
+
+
+asset Connection identified by connectionId {
+  o String connectionId
+  o String ownerId
+  o OwnerEntity OwnerEntity
+}
+
+
+asset Cash identified by cashId {
+  o String cashId
+  o String currency
+  o Double value
+  o String ownerId
+  o OwnerEntity ownerEntity
+}
+
+// asset Energy identified by energyId {
+//   o String energyId
+//   o String unit
+//   o Double value
+//   o String ownerId
+//   o OwnerEntity ownerEntity
+// }
+
+
+enum OwnerEntity {
+  o User
+  o BTRC
+  
+}
+
+
+transaction TalktimeToCash {
+  o Double callRate
+  o Double mintue
+ 
+  --> Connection connectionTo
+  --> Cash cashFrom
+  --> Cash cashTo
+}
+
+transaction CashToTalkTime {
+  o Double totalBill
+ 
+  --> Cash cashFrom
+  --> Cash cashTo
+}
+// transaction EnergyToCoins {
+//   o Double energyRate
+//   o Double energyValue
+//   --> Energy energyFrom
+//   --> Energy energyTo
+//   --> Coins coinFrom
+//   --> Coins coinTo
+// }
+
+// transaction CoinToCash {
+//  o Double coinRate
+//  o Double coinValue
+//  --> Cash cashFrom
+//  --> Cash cashTo
+//  --> Coins coinFrom
+//  --> Coins coinTo
+// }

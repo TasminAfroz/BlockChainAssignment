@@ -4,45 +4,30 @@
 
 namespace org.bjitgroup.com
 
+
+
+
 participant User identified by userNID {
   o String userNID
   o String firstName
   o String lastName 
   
-  --> Cash cash 
+  	--> Cash cash 
+   -->Connection connection
+   --> Talktime talkTime
 }
 
 
-// dummy data to check BTRC
-// {
-//   "$class": "org.bjitgroup.com.BTRC",
-//   "districtID": "0431",
-//   "districtName": "Barisal",
-//    "cash": "org.bjitgroup.com.Cash#CH1"
-// }
 
 participant BTRC identified by districtID {
   o String districtID
   o String districtName
   
-  --> Cash cash
+  	--> Cash cash
+
+	-->Talktime talkTime
+	-->Connection connection
 }
-
-// participant Bank identified by bankId {
-//   o String bankId
-//   o String bankName
-//   --> Coins coins
-//   --> Cash cash
-// }
-
-// participant PDC identified by pdcId {
-//   o String pdcId
-//   o String pdcName
-//   --> Coins coins
-//   --> Energy energy
-// }
-
-
 
 asset Coins identified by coinId {
   o String coinId
@@ -55,9 +40,9 @@ asset Coins identified by coinId {
 asset Connection identified by connectionId {
   o String connectionId
   o String ownerId
-  o OwnerEntity OwnerEntity
+  o String connectionStatus
+  o OwnerEntity ownerEntity
 }
-
 
 asset Cash identified by cashId {
   o String cashId
@@ -67,14 +52,14 @@ asset Cash identified by cashId {
   o OwnerEntity ownerEntity
 }
 
-// asset Energy identified by energyId {
-//   o String energyId
-//   o String unit
-//   o Double value
-//   o String ownerId
-//   o OwnerEntity ownerEntity
-// }
-
+asset Talktime identified by talkTimeId {
+   o String talkTimeId
+   o String unit
+   o Double value
+   o String ownerId
+   o OwnerEntity ownerEntity
+   --> Connection connectionID
+}
 
 enum OwnerEntity {
   o User
@@ -82,14 +67,16 @@ enum OwnerEntity {
   
 }
 
-
 transaction TalktimeToCash {
   o Double callRate
-  o Double mintue
- 
-  --> Connection connectionTo
-  --> Cash cashFrom
-  --> Cash cashTo
+  o Double minute
+  --> Talktime talkTimeTo
+   --> Talktime talkTimeFrom
+    --> Cash cashFrom
+    --> Cash cashTo
+    --> Connection connectionTo
+    --> Connection connectionFrom
+    
 }
 
 transaction CashToTalkTime {
@@ -98,20 +85,3 @@ transaction CashToTalkTime {
   --> Cash cashFrom
   --> Cash cashTo
 }
-// transaction EnergyToCoins {
-//   o Double energyRate
-//   o Double energyValue
-//   --> Energy energyFrom
-//   --> Energy energyTo
-//   --> Coins coinFrom
-//   --> Coins coinTo
-// }
-
-// transaction CoinToCash {
-//  o Double coinRate
-//  o Double coinValue
-//  --> Cash cashFrom
-//  --> Cash cashTo
-//  --> Coins coinFrom
-//  --> Coins coinTo
-// }

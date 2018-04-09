@@ -1,11 +1,19 @@
-rule ResidentAccessResidentOwnRecord {
- description: "Resident can access to their own record"
- participant: "org.bjitgroup.com.BTRC"
- operation: UPDATE,DELETE,READ
- resource(r): "org.bjitgroup.com.BTRC"
- condition: (r.getIdentifier()===p.getIdentifier())
- action: ALLOW
+rule BTRC {
+    description: "BTRC has full access"
+    participant: "org.bjitgroup.com.BTRC"
+    operation: ALL
+    resource: "org.bjitgroup.com.*"
+    action: ALLOW
 }
+
+rule User {
+    description: "User can only read data"
+    participant: "org.bjitgroup.com.User"
+    operation: READ
+    resource: "org.bjitgroup.com.*"
+    action: ALLOW
+}
+
 rule SystemACL { 
     description: "System ACL to permit all access" 
     participant: "org.hyperledger.composer.system.Participant" operation: ALL 
